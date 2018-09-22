@@ -1,5 +1,6 @@
 # Routes
 Rails.application.routes.draw do
+  resources :tickets
   resources :users do
     resources :videos do
       resources :replies
