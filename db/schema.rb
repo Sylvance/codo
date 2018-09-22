@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2018_09_22_133601) do
     t.bigint "user_id"
     t.string "title"
     t.string "post_type"
-    t.string "content"
+    t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2018_09_22_133601) do
   create_table "videos", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title"
-    t.string "type"
+    t.string "video_type"
     t.string "view_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

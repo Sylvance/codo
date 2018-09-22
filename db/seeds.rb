@@ -19,7 +19,7 @@
       end
       user.videos.new do |video|
         video.title = Faker::ProgrammingLanguage.name
-        video.type = Faker::Types.rb_string
+        video.video_type = Faker::Types.rb_string
         video.view_code = Faker::FamousLastWords.last_words
       end
     end
