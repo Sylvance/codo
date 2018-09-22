@@ -1,7 +1,9 @@
 # Routes
 Rails.application.routes.draw do
   resources :users do
-    resources :videos
+    resources :videos do
+      resources :replies
+    end
     resources :posts do
       resources :comments
     end
