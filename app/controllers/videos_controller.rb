@@ -1,10 +1,12 @@
 class VideosController < ApplicationController
+  before_action :set_user, except: [:index]
   before_action :set_video, only: [:show, :edit, :update, :destroy]
 
   # GET /videos
   # GET /videos.json
   def index
-    @videos = Video.all
+    @user = User.includes(:videos).find(params[:user_id])
+    @videos = @user.videos
   end
 
   # GET /videos/1
@@ -14,7 +16,7 @@ class VideosController < ApplicationController
 
   # GET /videos/new
   def new
-    @video = Video.new
+    @video = @user.videos.new
   end
 
   # GET /videos/1/edit
@@ -28,8 +30,8 @@ class VideosController < ApplicationController
 
     respond_to do |format|
       if @video.save
-        format.html { redirect_to @video, notice: 'Video was successfully created.' }
-        format.json { render :show, status: :created, location: @video }
+        format.html { redirect_to [@user, @video], notice: 'Video was successfully created.' }
+        format.json { render :show, status: :created, location: [@user, @video] }
       else
         format.html { render :new }
         format.json { render json: @video.errors, status: :unprocessable_entity }
@@ -42,8 +44,8 @@ class VideosController < ApplicationController
   def update
     respond_to do |format|
       if @video.update(video_params)
-        format.html { redirect_to @video, notice: 'Video was successfully updated.' }
-        format.json { render :show, status: :ok, location: @video }
+        format.html { redirect_to [@user, @video], notice: 'Video was successfully updated.' }
+        format.json { render :show, status: :ok, location: [@user, @video] }
       else
         format.html { render :edit }
         format.json { render json: @video.errors, status: :unprocessable_entity }
@@ -56,13 +58,17 @@ class VideosController < ApplicationController
   def destroy
     @video.destroy
     respond_to do |format|
-      format.html { redirect_to videos_url, notice: 'Video was successfully destroyed.' }
+      format.html { redirect_to [@user, :videos], notice: 'Video was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
     def set_video
       @video = Video.find(params[:id])
     end

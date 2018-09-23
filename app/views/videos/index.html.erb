@@ -16,13 +16,13 @@
   <tbody>
     <% @videos.each do |video| %>
       <tr>
-        <td><%= video.user %></td>
+        <td><%= video.user.id %></td>
         <td><%= video.title %></td>
         <td><%= video.video_type %></td>
         <td><%= video.view_code %></td>
-        <td><%= link_to 'Show', video %></td>
-        <td><%= link_to 'Edit', edit_video_path(video) %></td>
-        <td><%= link_to 'Destroy', video, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', [@user, video] %></td>
+        <td><%= link_to 'Edit', [:edit, @user, video] %></td>
+        <td><%= link_to 'Destroy', [@user, video], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -30,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Video', new_video_path %>
+<%= link_to 'New Video', new_user_video_path %>
