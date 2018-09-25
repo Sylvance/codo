@@ -16,13 +16,13 @@
   <tbody>
     <% @comments.each do |comment| %>
       <tr>
-        <td><%= comment.user %></td>
-        <td><%= comment.post %></td>
+        <td><%= comment.user.id %></td>
+        <td><%= comment.post.id %></td>
         <td><%= comment.title %></td>
         <td><%= comment.content %></td>
-        <td><%= link_to 'Show', comment %></td>
-        <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
-        <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', [@user, @post, comment] %></td>
+        <td><%= link_to 'Edit', [:edit, @user, @post, comment] %></td>
+        <td><%= link_to 'Destroy', [@user, @post, comment], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -30,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Comment', new_comment_path %>
+<%= link_to 'New Comment', new_user_post_comment_path %>
