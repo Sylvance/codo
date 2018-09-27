@@ -1,10 +1,13 @@
 class RepliesController < ApplicationController
+  before_action :set_user, :set_video, except: [:index]
   before_action :set_reply, only: [:show, :edit, :update, :destroy]
 
   # GET /replies
   # GET /replies.json
   def index
-    @replies = Reply.all
+    @user = User.includes(:videos).find(params[:user_id])
+    @video = @user.videos.find(params[:video_id])
+    @replies = @video.replies
   end
 
   # GET /replies/1
@@ -14,7 +17,7 @@ class RepliesController < ApplicationController
 
   # GET /replies/new
   def new
-    @reply = Reply.new
+    @reply = @video.replies.new
   end
 
   # GET /replies/1/edit
@@ -24,12 +27,12 @@ class RepliesController < ApplicationController
   # POST /replies
   # POST /replies.json
   def create
-    @reply = Reply.new(reply_params)
+    @reply = @video.replies.new(reply_params)
 
     respond_to do |format|
       if @reply.save
-        format.html { redirect_to @reply, notice: 'Reply was successfully created.' }
-        format.json { render :show, status: :created, location: @reply }
+        format.html { redirect_to [@user, @video, @reply], notice: 'Reply was successfully created.' }
+        format.json { render :show, status: :created, location: [@user, @video, @reply] }
       else
         format.html { render :new }
         format.json { render json: @reply.errors, status: :unprocessable_entity }
@@ -42,8 +45,8 @@ class RepliesController < ApplicationController
   def update
     respond_to do |format|
       if @reply.update(reply_params)
-        format.html { redirect_to @reply, notice: 'Reply was successfully updated.' }
-        format.json { render :show, status: :ok, location: @reply }
+        format.html { redirect_to [@user, @video, @reply], notice: 'Reply was successfully updated.' }
+        format.json { render :show, status: :ok, location: [@user, @video, @reply] }
       else
         format.html { render :edit }
         format.json { render json: @reply.errors, status: :unprocessable_entity }
@@ -56,15 +59,23 @@ class RepliesController < ApplicationController
   def destroy
     @reply.destroy
     respond_to do |format|
-      format.html { redirect_to replies_url, notice: 'Reply was successfully destroyed.' }
+      format.html { redirect_to [@user, @video, :replies], notice: 'Reply was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
+    def set_video
+      @video = @user.videos.find(params[:video_id])
+    end
+
     def set_reply
-      @reply = Reply.find(params[:id])
+      @reply = @video.replies.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

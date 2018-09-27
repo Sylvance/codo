@@ -2,12 +2,12 @@
 
 <p>
   <strong>User:</strong>
-  <%= @reply.user %>
+  <%= @reply.user.id %>
 </p>
 
 <p>
   <strong>Video:</strong>
-  <%= @reply.video %>
+  <%= @reply.video.id %>
 </p>
 
 <p>
@@ -20,5 +20,5 @@
   <%= @reply.content %>
 </p>
 
-<%= link_to 'Edit', edit_reply_path(@reply) %> |
-<%= link_to 'Back', replies_path %>
+<%= link_to 'Edit', edit_user_video_reply_path(@user, @video, @reply) %> |
+<%= link_to 'Back', user_video_replies_path %>
