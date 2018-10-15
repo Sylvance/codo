@@ -70,7 +70,7 @@ class VideosController < ApplicationController
     end
 
     def set_video
-      @video = Video.find(params[:id])
+      @video = @user.videos.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

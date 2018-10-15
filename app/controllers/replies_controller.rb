@@ -18,6 +18,7 @@ class RepliesController < ApplicationController
   # GET /replies/new
   def new
     @reply = @video.replies.new
+    @reply.user_id = @user.id
   end
 
   # GET /replies/1/edit

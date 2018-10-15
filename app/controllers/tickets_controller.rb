@@ -14,7 +14,7 @@ class TicketsController < ApplicationController
 
   # GET /tickets/new
   def new
-    @ticket = Ticket.new
+    @ticket = @user.tickets.new
   end
 
   # GET /tickets/1/edit
@@ -28,8 +28,8 @@ class TicketsController < ApplicationController
 
     respond_to do |format|
       if @ticket.save
-        format.html { redirect_to @ticket, notice: 'Ticket was successfully created.' }
-        format.json { render :show, status: :created, location: @ticket }
+        format.html { redirect_to [@user, @ticket], notice: 'Ticket was successfully created.' }
+        format.json { render :show, status: :created, location: [@user, @ticket] }
       else
         format.html { render :new }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
@@ -42,8 +42,8 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
-        format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
-        format.json { render :show, status: :ok, location: @ticket }
+        format.html { redirect_to [@user, @ticket], notice: 'Ticket was successfully updated.' }
+        format.json { render :show, status: :ok, location: [@user, @ticket] }
       else
         format.html { render :edit }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
@@ -56,15 +56,23 @@ class TicketsController < ApplicationController
   def destroy
     @ticket.destroy
     respond_to do |format|
-      format.html { redirect_to tickets_url, notice: 'Ticket was successfully destroyed.' }
+      format.html { redirect_to [@user, :tickets], notice: 'Ticket was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:user_id])
+    end
+
+    def set_video
+      @video = @user.videos.find(params[:video_id])
+    end
+
     def set_ticket
-      @ticket = Ticket.find(params[:id])
+      @ticket = @user.tickets.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
